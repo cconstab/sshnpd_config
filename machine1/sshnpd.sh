@@ -21,7 +21,7 @@ s="-s"
 # Uncomment if you wish to have the daemon make various information visible to
 # the manager atsign - e.g. username, version, etc - without the manager atSign
 # needing to know this daemon's device name
-u="-u"
+# u="-u"
 
 sleep 10 # allow machine to bring up network
 export USER="$user"
