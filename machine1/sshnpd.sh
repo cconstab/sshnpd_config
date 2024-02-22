@@ -10,7 +10,7 @@
 
 manager_atsign="@cconstab" # MANDATORY: Manager/client address (atSign)
 device_atsign="@ssh_1"  # MANDATORY: Device address (atSign)
-device_name="machine1"            # Device name
+device_name="$(hostname)"            # Device name
 user="$(whoami)"                 # MANDATORY: Username
 v="-v"                           # Comment to disable verbose logging
 
