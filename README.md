@@ -54,3 +54,23 @@ Then use something like this to login into the container
 ## Putting this altogether looks like this
 
 [![asciicast](https://asciinema.org/a/YKN91isQPkg0zSybSwMlUIBZh.svg)](https://asciinema.org/a/YKN91isQPkg0zSybSwMlUIBZh)
+
+# A few sample scripts 
+
+Fire off 100 containers
+
+```
+CNT=0
+while ((CNT<100))
+do
+((CNT++))
+docker run -d -v ~/.atsign/keys/@ssh_1_key.atKeys:/home/ubuntu/.atsign/keys/@ssh_1_key.atKeys scale
+done
+```
+
+And stop & remove ALL the containers on your machine. Just be careful if you have other things going on !
+
+```
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+```
