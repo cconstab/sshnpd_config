@@ -3,7 +3,11 @@ FROM ubuntu
 ENV USERNAME=ubuntu
 ENV HOMEDIR=/root
 ENV REPO="https://raw.githubusercontent.com/cconstab/sshnpd_config/main"
-ENV SSHNPD_IMAGE="https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-x64.tgz"
+# Make sure you change this to the right arch for your machine
+# x64
+#ENV SSHNPD_IMAGE="https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-x64.tgz"
+# ArmV8
+ENV SSHNPD_IMAGE=" https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-arm64.tgz"
 # Setup enviroment
 RUN \
 apt update ; \
