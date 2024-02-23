@@ -18,7 +18,9 @@ pwd ; \
 curl -fSL ${SSHNPD_IMAGE} -o sshnp.tgz ; \
 tar zxvf sshnp.tgz ;\
 sshnp/install.sh tmux sshnpd ;\
-curl --output ~/.local/bin/sshnpd.sh ${REPO}/config/sshnpd.sh
+curl --output ~/.local/bin/sshnpd.sh ${REPO}/config/sshnpd.sh ; \
+rm -r sshnp ; \
+rm sshnp.tgz
 USER root
 RUN \
 cd ;\
