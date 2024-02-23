@@ -23,7 +23,7 @@ s="-s"
 # needing to know this daemon's device name
 # u="-u"
 
-sleep 10 # allow machine to bring up network
+#sleep 10 # allow machine to bring up network
 export USER="$user"
 while true; do
 	# The line below runs the sshnpd service, with the options set above.
