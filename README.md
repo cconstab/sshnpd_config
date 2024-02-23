@@ -6,7 +6,7 @@ The aim of this code is to scale up N number of docker containers and be able to
 1) Tune the Dockerfile variables to your liking.
     
     a) Change the USERNAME
-    
+
     b) Change the sshnp image SSHNPD_IMAGE for your architecture
 
 2) Build a docker image with something like:
@@ -51,6 +51,6 @@ Then use something like this to login into the container
 
 `sshnp -f @cconstab -t @ssh_1  -h @rv_am -s  -u ubuntu -i ~/.ssh/id_ed25519 -d f29b74f57771`
 
-## Putting this altogether look like this
+## Putting this altogether looks like this
 
 [![asciicast](https://asciinema.org/a/YKN91isQPkg0zSybSwMlUIBZh.svg)](https://asciinema.org/a/YKN91isQPkg0zSybSwMlUIBZh)
