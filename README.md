@@ -6,6 +6,7 @@ The aim of this code is to scale up N number of docker containers and be able to
 1) Tune the Dockerfile variables to your liking.
     
     a) Change the USERNAME
+    
     b) Change the sshnp image SSHNPD_IMAGE for your architecture
 
 2) Build a docker image with something like:
