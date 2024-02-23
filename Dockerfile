@@ -7,7 +7,7 @@ ENV SSHNPD_IMAGE="https://github.com/atsign-foundation/noports/releases/latest/d
 # Setup enviroment
 RUN \
 apt update ; \
-apt install cron tmux openssh-server curl vim -y ;\
+apt install tmux openssh-server curl -y ;\
 mkdir /run/sshd ; \
 adduser --disabled-password --gecos "" $USERNAME
 USER $USERNAME

@@ -8,8 +8,12 @@
 # This service file covers the common configuration options for sshnpd.
 # To see all available options, run `sshnpd` with no arguments.
 
+############# Configure here with your atSigns ################################
 manager_atsign="@cconstab" # MANDATORY: Manager/client address (atSign)
 device_atsign="@ssh_1"  # MANDATORY: Device address (atSign)
+###############################################################################
+
+# Leave as is 
 device_name="$(hostname)"            # Device name
 user="$(whoami)"                 # MANDATORY: Username
 v="-v"                           # Comment to disable verbose logging
