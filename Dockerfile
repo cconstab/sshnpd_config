@@ -3,13 +3,21 @@ FROM ubuntu
 ENV USERNAME=ubuntu
 ENV HOMEDIR=/root
 ENV REPO="https://raw.githubusercontent.com/cconstab/sshnpd_config/main"
-# Make sure you change this to the right arch for your machine
-# x64
-#ENV SSHNPD_IMAGE="https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-x64.tgz"
-# ArmV8
-ENV SSHNPD_IMAGE=" https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-arm64.tgz"
-# Setup enviroment
-RUN \
+# Build image
+RUN set -eux; \
+    case "$(dpkg --print-architecture)" in \
+        amd64) \
+            SSHNPD_IMAGE="https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-x64.tgz" ;; \
+        armhf) \
+            SSHNPD_IMAGE="https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-arm.tgz" ;; \ 
+        arm64) \
+            SSHNPD_IMAGE="https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-arm64.tgz" ;; \
+        riscv64) \
+            SSHNPD_IMAGE="https://github.com/atsign-foundation/noports/releases/latest/download/sshnp-linux-riscv.tgz" ;; \
+        *) \
+            echo "Unsupported architecture" ; \
+            exit 5;; \
+    esac; \
 apt update ; \
 apt install tmux openssh-server curl -y ;\
 mkdir /run/sshd ; \
