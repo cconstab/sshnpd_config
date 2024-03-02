@@ -60,6 +60,8 @@ curl -fSL $SSHNPD_IMAGE -o sshnp.tgz ; \
 tar zxvf sshnp.tgz ;\
 sshnp/install.sh tmux sshnpd ;\
 curl --output ~/.local/bin/sshnpd.sh ${CONFIG_URL} ; \
+sed -i 's/MANAGER_ATSIGN/$MANAGER_ATSIGN' ~/.local/bin/sshnpd.sh ; \
+sed -i 's/DEVICE_ATSIGN/$DEVICE_ATSIGN' ~/.local/bin/sshnpd.sh ; \
 rm -r sshnp ; \
 rm sshnp.tgz' $USERNAME
 ####################################################################
