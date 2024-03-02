@@ -2,16 +2,38 @@
 # Configure these variable to your liking
 export USERNAME=ubuntu
 export PASSWORD="changeme"
-export HOMEDIR="/root"
-export REPO="https://raw.githubusercontent.com/cconstab/sshnpd_config/main"
+export CONFIG_URL="https://raw.githubusercontent.com/cconstab/sshnpd_config/main/config/sshnpd.sh"
+export ATKEYS_URL=""
+# Single atSign or comma delimited list
+export MANAGER_ATSIGN="@cconstab"
+export DEVICE_ATSIGN="@ssh_1"
 ####################################################################
 # Get machine updated and with the needed packages                 #
 ####################################################################
 apt update
 apt install tmux openssh-server curl cron sudo -y 
-mkdir /run/sshd
+# create USERNAME with sudo priviledges
 useradd -m -p $(openssl passwd -1 ${PASSWORD}) -s /bin/bash -G sudo ${USERNAME}
-#sudo usermod -a -G sudo $USERNAME"
+####################################################################
+# start sshd listening on localhost only                           #
+####################################################################
+# Update the sshd config so it only runs on localhost
+#sed -i 's/#ListenAddress 0.0.0.0/ListenAddress 127.0.0.1/' /etc/ssh/sshd_config
+# restart sshd if your OS starts it on install
+# e.g on Ubuntu/Debian
+#systemctl restart ssh.service
+# or Redhat/Centos
+#systemctl restart sshd.service
+####################################################################
+# Start sshd Only needed if sshd is not started by default         #
+# Remove these lines if the OS you are using starts up sshd itself #
+####################################################################
+# File needed for sshd to run
+mkdir /run/sshd
+# generate the sshd Keys
+ssh-keygen -A
+# Start sshd listening on localhost and with no password auth 
+/usr/sbin/sshd -D -o "ListenAddress 127.0.0.1" -o "PasswordAuthentication no"  &
 ####################################################################
 # Install sshnpd as the selected USERNAME                          #
 ####################################################################
@@ -37,18 +59,11 @@ mkdir -p ~/.atsign/keys ; \
 curl -fSL $SSHNPD_IMAGE -o sshnp.tgz ; \
 tar zxvf sshnp.tgz ;\
 sshnp/install.sh tmux sshnpd ;\
-curl --output ~/.local/bin/sshnpd.sh ${REPO}/config/sshnpd.sh ; \
+curl --output ~/.local/bin/sshnpd.sh ${CONFIG_URL} ; \
 rm -r sshnp ; \
 rm sshnp.tgz' $USERNAME
 ####################################################################
-# Start sshd Only needed if sshd is not started by default         #
-####################################################################
-# generate the sshd Keys
-ssh-keygen -A
-# Start sshd listening on localhost and with no password auth
-/usr/sbin/sshd -D -o "ListenAddress 127.0.0.1" -o "PasswordAuthentication no"  &
-####################################################################
-# Start sshnpd                                                     #
+# Start sshnpd, the crontab entry will do this on rebot            #
 ####################################################################
 su - $USERNAME sh -c "/usr/bin/tmux new-session -d -s sshnpd && tmux send-keys -t sshnpd /home/ubuntu/.local/bin/sshnpd.sh C-m" 
 

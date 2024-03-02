@@ -9,8 +9,8 @@
 # To see all available options, run `sshnpd` with no arguments.
 
 ############# Configure here with your atSigns ################################
-manager_atsign="@cconstab" # MANDATORY: Manager/client address (atSign)
-device_atsign="@ssh_1"  # MANDATORY: Device address (atSign)
+manager_atsign="MANAGER_ATSIGN" # MANDATORY: Manager/client address (atSign)
+device_atsign="DEVICE_ATSIGN"  # MANDATORY: Device address (atSign)
 ###############################################################################
 
 # Leave as is 
