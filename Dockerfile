@@ -1,10 +1,12 @@
 FROM ubuntu
-# Configure these variable to your liking
+# Configure these variables to your liking
 ENV USERNAME=ubuntu
 ENV HOMEDIR=/root
+# Manager atSign either a Single atSign or comma delimited list from sshnpd v5.0.3
 ENV MANAGER_ATSIGN="@cconstab"
 ENV DEVICE_ATSIGN="@ssh_1"
 ENV DEVICE_NAME="$(hostname)"
+################ Do not touch below ########################
 # Build image
 COPY startup.sh /root/startup.sh
 COPY config/sshnpd.sh /home/${USERNAME}/.local/bin/sshnpd.sh
@@ -36,7 +38,6 @@ mkdir -p ~/.local/bin ; \
 curl -fSL $SSHNPD_IMAGE -o sshnp.tgz ; \
 tar zxvf sshnp.tgz ;\
 sshnp/install.sh tmux sshnpd ;\
-#curl --output ~/.local/bin/sshnpd.sh /config/sshnpd.sh ; \
 sed -i "s/MANAGER_ATSIGN/${MANAGER_ATSIGN}/" ~/.local/bin/sshnpd.sh ; \
 sed -i "s/DEVICE_ATSIGN/${DEVICE_ATSIGN}/"   ~/.local/bin/sshnpd.sh ; \
 sed -i "s/DEVICE_NAME/${DEVICE_NAME}/"       ~/.local/bin/sshnpd.sh ; \
