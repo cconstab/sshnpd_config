@@ -1,7 +1,56 @@
+# Install sshnpd at scale
+
+## Notes
+Each atSign has a reasonable maximum of 25 devices that it can manage so keep that in mind as you use this script to rollout devices.
+
+## Set up environment
+Each atSign has its own set of keys that are "cut" with at_activate. This will cut the keys for the atSign an place them in `~/.atsign/keys`. But each machine you want run sshnpd on also needs these keys so we need to have a way to get them to each device.
+It is possible to ssh/scp them but that becomes very cumbersome at scale. Instead we encrypt the keys with AES256 and place them on a webserver. When the install script is run it knows bot the URL and the encryption password and can pull the atKeys file to the right place.
+
+The steps are to get the atKeys file as normal using at_activate then encrypt them using a command like this:
+
+```
+mkdir enckeys
+cd enckeys
+openssl enc -aes-256-cbc -pbkdf2 -iter 1000000 -salt -in ~/.atsign/keys/@ssh_1_key.atKeys -out @ssh_1_key.atKeys.aes
+```
+This command will ask you for a passord which you will put in the `install.sh` file as `ATKEY_PASSWORD`.
+
+
+You can then set up a simple http (the file is encrypted) server to serve the keys, with for example a python single line of code.
+
+`python3 -m http.server 8080 --bind 0`
+
+At this point you can derive the URL of the encrypted atKeys file and put it in the `install.sh` file headers
+
+```
+export ATKEYS_URL="http://192.168.1.61:8080/@ssh_1_key.atKeys.aes"
+# This is the AES password you used to encrypt the above file
+export ATKEY_PASSWORD="helloworld"
+```
+
+The other variables should be straight forward enough.
+
+```
+export USERNAME=ubuntu
+export PASSWORD="changeme"
+export CONFIG_URL="https://raw.githubusercontent.com/cconstab/sshnpd_config/main/config/sshnpd.sh"
+```
+USERNAME is the username of the Linux account that runs sshnpd
+PASSWORD is the password of the username allowing sudo powers
+CONFIG_URL is the default config file used to run sshnpd
+
+The other variables set up the atSigns for the manager and device and the device name itself. The devaice name by default uses the `hostname`
+
+# Running the install.sh (Note has to be run as root)
+This is a simple matter now of getting the install.sh to the target device and running it. The needed files will be installed, the username name created, cronjobs put in place and the 'sshnpd' will be started.
+
+How you get the `install.sh` file to the target machine is going to vary depending on your enviroment. Using scp is a good option or using ssh or curl and pulling the file (using the same encryption method perhaps).
+
 # Scale test rig for sshnpd/atServer
 
 ## Set up environment
-The aim of this code is to scale up N number of docker containers and be able to login to them with sshnp.
+The aim of this code is to scale up N number of docker containers and be able to login to them with sshnp. The answer is 50 but with a realistic limit of 25 per atSign.
 
 1) Tune the Dockerfile variables to your liking.
     
