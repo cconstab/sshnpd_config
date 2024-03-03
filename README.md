@@ -1,7 +1,8 @@
 # Install sshnpd at scale
 
-## Notes
+## Importamt Notes
 Each atSign has a reasonable maximum of 25 devices that it can manage so keep that in mind as you use this script to rollout devices.
+By default the hostname is used as the DEVICE_NAME but your hostnames may not match the requirments of the DEVICE_NAME flag (Alphanumeric max 36 Chars Snake Case). 
 
 ## Set up environment
 Each atSign has its own set of keys that are "cut" with at_activate. This will cut the keys for the atSign an place them in `~/.atsign/keys`. But each machine you want run sshnpd on also needs these keys so we need to have a way to get them to each device.
@@ -58,6 +59,62 @@ For example
 
 ` ./install.sh ubuntu changeme https://raw.githubusercontent.com/cconstab/sshnpd_config/main/config/sshnpd.sh http://192.168.1.61:8080/@ssh_1_key.atKeys.aes helloworld @cconstab @ssh_1 $(hostname)`
 
+# To test this
+Using docker is the simple way to test any options first before moving to production.
+
+something like this will mount the script and start a basic Linux build.
+
+` docker run -it -v ./install.sh:/root/install.sh debian:trixie-slim`
+
+You can then cd and run the `install.sh` script for example:
+
+```
+╰$ docker run -it -v ./install.sh:/root/install.sh debian:trixie-slim
+root@f5040633c8a0:/# cd
+root@f5040633c8a0:~# ls
+install.sh
+root@f5040633c8a0:~# ./install.sh 
+```
+
+After the install has completed you can su - to the USERNAME you chose and see tmux/sshnpd running.
+
+```
+root@f5040633c8a0:~# su - ubuntu
+ubuntu@f5040633c8a0:~$ tmux ls
+sshnpd: 1 windows (created Sun Mar  3 22:48:01 2024)
+ubuntu@f5040633c8a0:~$ 
+```
+
+On another machine you can login to the container using the select MANAGER_ATSIGN rememebring to give the daemon an ssh key and the username.
+
+```
+~/.local/bin/sshnp -f @cconstab -t @ssh_1  -h @rv_am -s -i ~/.ssh/id_ed25519 -u ubuntu  -d f5040633c8a0
+2024-03-03 14:51:34.574057 : Resolving remote username for user session
+2024-03-03 14:51:34.574107 : Resolving remote username for tunnel session
+2024-03-03 14:51:34.574562 : Sharing ssh public key
+2024-03-03 14:51:36.239757 : Fetching host and port from srvd
+2024-03-03 14:51:39.239811 : Sending session request to the device daemon
+2024-03-03 14:51:39.469112 : Waiting for response from the device daemon
+2024-03-03 14:51:40.993543 : Received response from the device daemon
+2024-03-03 14:51:40.994470 : Creating connection to socket rendezvous
+2024-03-03 14:51:41.114766 : Starting tunnel session
+2024-03-03 14:51:41.989428 : Starting user session
+Linux f5040633c8a0 6.6.12-linuxkit #1 SMP Fri Jan 19 08:53:17 UTC 2024 aarch64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Sun Mar  3 22:51:42 2024 from 127.0.0.1
+-bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+ubuntu@f5040633c8a0:~$
+```
+
+You are now logged into the container and if you need root access can use the password you chose to `sudo -s`
+
+Good luck using this outline for your own environment.
 
 # Scale test rig for sshnpd/atServer
 
