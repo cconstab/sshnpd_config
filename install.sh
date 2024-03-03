@@ -77,6 +77,7 @@ mkdir -p ~/.local/bin ; \
 mkdir -p ~/.atsign/keys ; \
 curl -fSL ${ATKEYS_URL} -o atKeys.aes ; \
 openssl aes-256-cbc -d -salt -pbkdf2 -iter 1000000 -in ./atKeys.aes -out ~/.atsign/keys/${DEVICE_ATSIGN}_key.atKeys --pass env:ATKEY_PASSWORD ; \
+chmod 600 ~/.atsign/keys/${DEVICE_ATSIGN}_key.atKeys ; \
 curl -fSL $SSHNPD_IMAGE -o sshnp.tgz ; \
 tar zxvf sshnp.tgz ;\
 sshnp/install.sh tmux sshnpd ;\
