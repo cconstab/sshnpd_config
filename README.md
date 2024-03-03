@@ -54,6 +54,10 @@ First you need to have ssh root access to the machines you want to install on. T
 
 if you pass 8 arguments into the install.sh they will be used rather than the hardcoded values. This allows you to pass in the values needed as the script is run QED.
 
+For example
+
+` ./install.sh ubuntu changeme https://raw.githubusercontent.com/cconstab/sshnpd_config/main/config/sshnpd.sh http://192.168.1.61:8080/@ssh_1_key.atKeys.aes helloworld @cconstab @ssh_1 $(hostname)`
+
 
 # Scale test rig for sshnpd/atServer
 
