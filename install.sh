@@ -14,7 +14,7 @@ export ATKEY_PASSWORD="helloworld"
 # Single atSign or comma delimited list
 export MANAGER_ATSIGN="@cconstab"
 export DEVICE_ATSIGN="@ssh_1"
-export DEVCE_NAME="$(hostname)"
+export DEVICE_NAME="$(hostname)"
 ####################################################################
 # Get machine updated and with the needed packages                 #
 ####################################################################
@@ -45,7 +45,7 @@ ssh-keygen -A
 ####################################################################
 # Install sshnpd as the selected USERNAME                          #
 ####################################################################
-su --whitelist-environment="MANAGER_ATSIGN,DEVICE_ATSIGN,ATKEY_PASSWORD,ATKEYS_URL" -c ' \
+su --whitelist-environment="MANAGER_ATSIGN,DEVICE_ATSIGN,ATKEY_PASSWORD,ATKEYS_URL,DEVICE_NAME" -c ' \
 set -eux; \
     case "$(dpkg --print-architecture)" in \
         amd64) \
@@ -71,7 +71,7 @@ sshnp/install.sh tmux sshnpd ;\
 curl --output ~/.local/bin/sshnpd.sh ${CONFIG_URL} ; \
 sed -i "s/MANAGER_ATSIGN/$MANAGER_ATSIGN/" ~/.local/bin/sshnpd.sh ; \
 sed -i "s/DEVICE_ATSIGN/$DEVICE_ATSIGN/" ~/.local/bin/sshnpd.sh ; \
-sed -i "s/DEVCE_NAME/$DEVCE_NAME/"  ~/.local/bin/sshnpd.sh ; \
+sed -i "s/DEVICE_NAME/$DEVICE_NAME/"  ~/.local/bin/sshnpd.sh ; \
 rm -r sshnp ; \
 rm sshnp.tgz atKeys.aes' $USERNAME
 ####################################################################
