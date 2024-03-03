@@ -3,7 +3,14 @@
 export USERNAME=ubuntu
 export PASSWORD="changeme"
 export CONFIG_URL="https://raw.githubusercontent.com/cconstab/sshnpd_config/main/config/sshnpd.sh"
-export ATKEYS_URL=""
+# Remember to encrypt your keys!!!!
+# Encrypt with
+# openssl enc -aes-256-cbc -pbkdf2 -iter 1000000 -salt -in ~/.atsign/keys/@ssh_1_key.atKeys -out @ssh_1_key.atKeys.aes
+# Test decrypt with
+# openssl aes-256-cbc -d -salt -pbkdf2 -iter 1000000 -in ./@ssh_1_key.atKeys.enc -out ./@ssh_1_key.atKeys
+export ATKEYS_URL="http://192.168.1.61:8080/@ssh_1_key.atKeys.aes"
+# This is the AES password you used to encrypt the above file
+export ATKEY_PASSWORD="helloworld"
 # Single atSign or comma delimited list
 export MANAGER_ATSIGN="@cconstab"
 export DEVICE_ATSIGN="@ssh_1"
@@ -37,7 +44,7 @@ ssh-keygen -A
 ####################################################################
 # Install sshnpd as the selected USERNAME                          #
 ####################################################################
-su -c ' \
+su --whitelist-environment="MANAGER_ATSIGN,DEVICE_ATSIGN,ATKEY_PASSWORD,ATKEYS_URL" -c ' \
 set -eux; \
     case "$(dpkg --print-architecture)" in \
         amd64) \
@@ -52,18 +59,19 @@ set -eux; \
             echo "Unsupported architecture" ; \
             exit 5;; \
     esac; \
-echo $USERNAME ;\
 cd ; \
 mkdir -p ~/.local/bin ; \
 mkdir -p ~/.atsign/keys ; \
+curl -fSL ${ATKEYS_URL} -o atKeys.aes ; \
+openssl aes-256-cbc -d -salt -pbkdf2 -iter 1000000 -in ./atKeys.aes -out ~/.atsign/keys/${DEVICE_ATSIGN}_key.atKeys --pass env:ATKEY_PASSWORD ; \
 curl -fSL $SSHNPD_IMAGE -o sshnp.tgz ; \
 tar zxvf sshnp.tgz ;\
 sshnp/install.sh tmux sshnpd ;\
 curl --output ~/.local/bin/sshnpd.sh ${CONFIG_URL} ; \
-sed -i 's/MANAGER_ATSIGN/$MANAGER_ATSIGN' ~/.local/bin/sshnpd.sh ; \
-sed -i 's/DEVICE_ATSIGN/$DEVICE_ATSIGN' ~/.local/bin/sshnpd.sh ; \
+sed -i "s/MANAGER_ATSIGN/$MANAGER_ATSIGN/" ~/.local/bin/sshnpd.sh ; \
+sed -i "s/DEVICE_ATSIGN/$DEVICE_ATSIGN/" ~/.local/bin/sshnpd.sh ; \
 rm -r sshnp ; \
-rm sshnp.tgz' $USERNAME
+rm sshnp.tgz atKeys.aes' $USERNAME
 ####################################################################
 # Start sshnpd, the crontab entry will do this on rebot            #
 ####################################################################
