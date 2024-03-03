@@ -10,11 +10,11 @@
 
 ############# Configure here with your atSigns ################################
 manager_atsign="MANAGER_ATSIGN" # MANDATORY: Manager/client address (atSign)
-device_atsign="DEVICE_ATSIGN"  # MANDATORY: Device address (atSign)
+device_atsign="DEVICE_ATSIGN"   # MANDATORY: Device address (atSign)
 ###############################################################################
 
 # Leave as is 
-device_name="$(hostname)"            # Device name
+device_name="$(hostname)"        # Device name
 user="$(whoami)"                 # MANDATORY: Username
 v="-v"                           # Comment to disable verbose logging
 
