@@ -14,7 +14,7 @@ device_atsign="DEVICE_ATSIGN"   # MANDATORY: Device address (atSign)
 ###############################################################################
 
 # Leave as is 
-device_name="$(hostname)"        # Device name
+device_name="DEVICE_NAME"           # Device name
 user="$(whoami)"                 # MANDATORY: Username
 v="-v"                           # Comment to disable verbose logging
 
