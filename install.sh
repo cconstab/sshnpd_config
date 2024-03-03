@@ -1,5 +1,7 @@
 #!/bin/bash
-# Configure these variable to your liking
+# Configure these variable to your liking or pass in args
+if [ $# -ne 8 ]
+then
 export USERNAME=ubuntu
 export PASSWORD="changeme"
 export CONFIG_URL="https://raw.githubusercontent.com/cconstab/sshnpd_config/main/config/sshnpd.sh"
@@ -15,6 +17,16 @@ export ATKEY_PASSWORD="helloworld"
 export MANAGER_ATSIGN="@cconstab"
 export DEVICE_ATSIGN="@ssh_1"
 export DEVICE_NAME="$(hostname)"
+else 
+export USERNAME=$1
+export PASSWORD=$2
+export CONFIG_URL=$3
+export ATKEYS_URL=$4
+export ATKEY_PASSWORD=$5
+export MANAGER_ATSIGN=$6
+export DEVICE_ATSIGN=$7
+export DEVICE_NAME=$8
+fi
 ####################################################################
 # Get machine updated and with the needed packages                 #
 ####################################################################

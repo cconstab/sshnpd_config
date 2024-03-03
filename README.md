@@ -47,6 +47,14 @@ This is a simple matter now of getting the install.sh to the target device and r
 
 How you get the `install.sh` file to the target machine is going to vary depending on your enviroment. Using scp is a good option or using ssh or curl and pulling the file (using the same encryption method perhaps).
 
+# Scaling things up
+The install.sh script works fine on individual machines but if you want to install on say 25 machines this is how you do it.
+
+First you need to have ssh root access to the machines you want to install on. This btw this SSH access will be removed as you do the install !
+
+if you pass 8 arguments into the install.sh they will be used rather than the hardcoded values. This allows you to pass in the values needed as the script is run QED.
+
+
 # Scale test rig for sshnpd/atServer
 
 ## Set up environment
