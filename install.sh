@@ -2,17 +2,19 @@
 # Configure these variable to your liking or pass in args
 if [ $# -ne 8 ]
 then
-export USERNAME=ubuntu
+# USERNAME & PASSWORD created with sudo priviledges by install.sh
+export USERNAME="ubuntu"
 export PASSWORD="changeme"
+# URL of the config/sshnpd.sh file contained in this repo (this will change if repo is cloned)
 export CONFIG_URL="https://raw.githubusercontent.com/cconstab/sshnpd_config/main/config/sshnpd.sh"
 # Remember to encrypt your keys!!!!
 # Encrypt with
 # openssl enc -aes-256-cbc -pbkdf2 -iter 1000000 -salt -in ~/.atsign/keys/@ssh_1_key.atKeys -out @ssh_1_key.atKeys.aes
 # Test decrypt with
 # openssl aes-256-cbc -d -salt -pbkdf2 -iter 1000000 -in ./@ssh_1_key.atKeys.aes -out ./@ssh_1_key.atKeys
-export ATKEYS_URL="http://192.168.1.61:8080/@ssh_1_key.atKeys.aes"
+export ATKEYS_URL="https://filebin.net/s2w5r6gasmmz5kvi/_ssh_1_key.atKeys.aes"
 # This is the AES password you used to encrypt the above file
-export ATKEY_PASSWORD="helloworld"
+export ATKEY_PASSWORD="helloworld12345!"
 # Manager atSign either a Single atSign or comma delimited list from sshnpd v5.0.3
 export MANAGER_ATSIGN="@cconstab"
 export DEVICE_ATSIGN="@ssh_1"
@@ -46,6 +48,7 @@ useradd -m -p $(openssl passwd -1 ${PASSWORD}) -s /bin/bash -G sudo ${USERNAME}
 #systemctl restart sshd.service
 ####################################################################
 # Start sshd Only needed if sshd is not started by default         #
+# for example a docker container                                   #
 # Remove these lines if the OS you are using starts up sshd itself #
 ####################################################################
 # File needed for sshd to run
@@ -88,7 +91,7 @@ sed -i "s/DEVICE_NAME/$DEVICE_NAME/"  ~/.local/bin/sshnpd.sh ; \
 rm -r sshnp ; \
 rm sshnp.tgz atKeys.aes' $USERNAME
 ####################################################################
-# Start sshnpd, the crontab entry will do this on rebot            #
+# Start sshnpd, the crontab entry will do this on reboots          #
 ####################################################################
 su - $USERNAME sh -c "/usr/bin/tmux new-session -d -s sshnpd && tmux send-keys -t sshnpd /home/ubuntu/.local/bin/sshnpd.sh C-m" 
 

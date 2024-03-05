@@ -22,6 +22,12 @@ You can then set up a simple http (the file is encrypted) server to serve the ke
 
 `python3 -m http.server 8080 --bind 0`
 
+Alternatively you can put the keys file on filebin.net and it will locate the file in a random URL which you can put into the `install.sh` file, for example
+
+`https://filebin.net/s2w5r6gwemmz5kvi/_ssh_1_key.atKeys.aes`
+
+It is worth noting that the `@` gets translated to a `_` but that does not effect the script.Using this site has the advantage that the URL is hidden and it uses TLS plus you can delete the files once completed.
+
 At this point you can derive the URL of the encrypted atKeys file and put it in the `install.sh` file headers
 
 ```
