@@ -6,13 +6,13 @@ then
 export USERNAME="ubuntu"
 export PASSWORD="changeme"
 # URL of the config/sshnpd.sh file contained in this repo (this will change if repo is cloned)
-export CONFIG_URL="https://raw.githubusercontent.com/cconstab/sshnpd_config/main/config/sshnpd.sh"
+export CONFIG_URL="https://gist.githubusercontent.com/cconstab/142c942ce0c8caa3348d0976a60fbfd1/raw/d243d64573bf2b7de5e827ff9b7b7f2f2413901b/gistfile1.txt"
 # Remember to encrypt your keys!!!!
 # Encrypt with
 # openssl enc -aes-256-cbc -pbkdf2 -iter 1000000 -salt -in ~/.atsign/keys/@ssh_1_key.atKeys -out @ssh_1_key.atKeys.aes
 # Test decrypt with
 # openssl aes-256-cbc -d -salt -pbkdf2 -iter 1000000 -in ./@ssh_1_key.atKeys.aes -out ./@ssh_1_key.atKeys
-export ATKEYS_URL="https://filebin.net/s2w5r6gasmmz5kvi/_ssh_1_key.atKeys.aes"
+export ATKEYS_URL="https://filebin.net/cpme4cvndfsv/_ssh_1_key.atKeys.aes"
 # This is the AES password you used to encrypt the above file
 export ATKEY_PASSWORD="helloworld12345!"
 # Manager atSign either a Single atSign or comma delimited list from sshnpd v5.0.3
@@ -88,10 +88,15 @@ curl --output ~/.local/bin/sshnpd.sh ${CONFIG_URL} ; \
 sed -i "s/MANAGER_ATSIGN/$MANAGER_ATSIGN/" ~/.local/bin/sshnpd.sh ; \
 sed -i "s/DEVICE_ATSIGN/$DEVICE_ATSIGN/" ~/.local/bin/sshnpd.sh ; \
 sed -i "s/DEVICE_NAME/$DEVICE_NAME/"  ~/.local/bin/sshnpd.sh ; \
+# Uncomment this if you _want_ to use '-u' for sshnpd ; \
+#sed -i "s/# u=\"-u\"/u=\"-u\"/" ~/.local/bin/sshnpd.sh ; \
+# Uncomment this if you do _not_ want `-s` enabled (you would need to send ssh keys)
+#sed -i "s/s=\"-s\"/# s=\"-s\"/"  ~/.local/bin/sshnpd.sh ; \
 rm -r sshnp ; \
 rm sshnp.tgz atKeys.aes' $USERNAME
 ####################################################################
 # Start sshnpd, the crontab entry will do this on reboots          #
 ####################################################################
 su - $USERNAME sh -c "/usr/bin/tmux new-session -d -s sshnpd && tmux send-keys -t sshnpd /home/ubuntu/.local/bin/sshnpd.sh C-m" 
-
+# Helpful to sleep if using Docker so conatainer stay alive.
+# sleep infinity
