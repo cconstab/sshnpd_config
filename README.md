@@ -1,6 +1,6 @@
 # Install sshnpd at scale
 
-## Importamt Notes
+## Important Notes
 Each atSign has a reasonable maximum of 25 devices that it can manage so keep that in mind as you use this script to rollout devices.
 By default the hostname is used as the DEVICE_NAME but your hostnames may not match the requirments of the DEVICE_NAME flag (Alphanumeric max 36 Chars Snake Case). 
 
