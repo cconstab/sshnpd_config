@@ -91,11 +91,7 @@ sed -i "s/DEVICE_NAME/$DEVICE_NAME/"  ~/.local/bin/sshnpd.sh ; \
 rm -r sshnp ; \
 rm sshnp.tgz atKeys.aes' $USERNAME
 ####################################################################
-<<<<<<< Updated upstream
 # Start sshnpd, the crontab entry will do this on reboots          #
-=======
-# Start sshnpd, the crontab entry will do this on reboot           #
->>>>>>> Stashed changes
 ####################################################################
 su - $USERNAME sh -c "/usr/bin/tmux new-session -d -s sshnpd && tmux send-keys -t sshnpd /home/ubuntu/.local/bin/sshnpd.sh C-m" 
 
