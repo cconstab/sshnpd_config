@@ -12,7 +12,7 @@ export CONFIG_URL="https://gist.githubusercontent.com/cconstab/142c942ce0c8caa33
 # openssl enc -aes-256-cbc -pbkdf2 -iter 1000000 -salt -in ~/.atsign/keys/@ssh_1_key.atKeys -out @ssh_1_key.atKeys.aes
 # Test decrypt with
 # openssl aes-256-cbc -d -salt -pbkdf2 -iter 1000000 -in ./@ssh_1_key.atKeys.aes -out ./@ssh_1_key.atKeys
-export ATKEYS_URL="https://filebin.net/cpme4cvndfsv/_ssh_1_key.atKeys.aes"
+export ATKEYS_URL="https://filebin.net/cpme4bhrqolyrnts/_ssh_1_key.atKeys.aes"
 # This is the AES password you used to encrypt the above file
 export ATKEY_PASSWORD="helloworld12345!"
 # Manager atSign either a Single atSign or comma delimited list from sshnpd v5.0.3
@@ -98,5 +98,5 @@ rm sshnp.tgz atKeys.aes' $USERNAME
 # Start sshnpd, the crontab entry will do this on reboots          #
 ####################################################################
 su - $USERNAME sh -c "/usr/bin/tmux new-session -d -s sshnpd && tmux send-keys -t sshnpd /home/ubuntu/.local/bin/sshnpd.sh C-m" 
-# Helpful to sleep if using Docker so conatainer stay alive.
+# Helpful to sleep if using Docker so container stays alive.
 # sleep infinity
